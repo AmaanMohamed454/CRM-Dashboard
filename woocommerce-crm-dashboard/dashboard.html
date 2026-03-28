@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WooCRM Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0B0F19',
+                        darker: '#05070A',
+                        primary: '#4F46E5',  /* Indigo-600 */
+                        primaryAccent: '#818CF8', /* Indigo-400 */
+                        glass: 'rgba(17, 24, 39, 0.7)',
+                        glassBorder: 'rgba(255, 255, 255, 0.05)'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-darker text-gray-200 font-sans antialiased overflow-hidden h-screen flex relative">
+
+    <!-- Background Glow Effects -->
+    <div
+        class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] pointer-events-none z-0">
+    </div>
+    <div
+        class="fixed bottom-[-10%] right-[-10%] w-[30%] h-[30%] bg-purple-600/10 rounded-full blur-[100px] pointer-events-none z-0">
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="w-64 glass-panel border-r border-slate-800/60 hidden md:flex flex-col flex-shrink-0 z-20">
+        <div class="h-20 flex items-center px-8 border-b border-slate-800/60">
+            <h1
+                class="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primaryAccent to-purple-400 flex items-center gap-3">
+                <i class="fas fa-layer-group text-primaryAccent"></i>
+                WooCRM
+            </h1>
+        </div>
+
+        <div class="px-6 py-4 uppercase text-[10px] font-bold tracking-widest text-slate-500 mt-2">Menu</div>
+
+        <nav class="flex-1 px-4 space-y-1 overflow-y-auto scrollbar-hide">
+            <a href="#"
+                class="flex items-center gap-3 px-4 py-3.5 rounded-xl bg-gradient-to-r from-primary/20 to-transparent border-l-2 border-primary text-white font-medium transition-all shadow-lg shadow-primary/5">
+                <i class="fas fa-border-all text-primaryAccent w-5"></i> Dashboard
+            </a>
+            <div class="space-y-1 mb-8">
+                <div class="px-2 uppercase text-[10px] font-bold tracking-widest text-slate-500 mb-2">Management</div>
+                <a href="#" onclick="openCustomersModal()"
+                    class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800/50 text-slate-400 hover:text-white transition-all group">
+                    <i class="fas fa-users w-5 group-hover:text-blue-400 transition-colors"></i> Customers Directory
+                </a>
+                <a href="#" onclick="openNewOrderModal()"
+                    class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800/50 text-slate-400 hover:text-white transition-all group">
+                    <i class="fas fa-shopping-bag w-5 group-hover:text-emerald-400 transition-colors"></i> Insert New Order
+                </a>
+            </div>
+            <div class="pt-8 pb-4">
+                <div class="px-2 uppercase text-[10px] font-bold tracking-widest text-slate-500 mb-2">Settings</div>
+                <div class="space-y-1">
+                <a href="#" class="flex items-center gap-3 px-4 py-3 bg-primary/20 text-primary border border-primary/30 rounded-xl transition-all font-semibold shadow-[0_0_15px_rgba(79,70,229,0.15)] relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <i class="fas fa-chart-pie w-5 relative z-10"></i> <span class="relative z-10">Dashboard</span>
+                </a>
+                <a href="#" onclick="openAnalyticsModal()"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800/50 text-slate-400 hover:text-white transition-all text-sm font-medium">
+                    <i class="fas fa-chart-line w-5 text-slate-500"></i> Analytics
+                </a>
+            </div>
+        </nav>
+
+        <!-- User Profile -->
+        <div onclick="openProfileModal()" class="p-4 border-t border-slate-700/50 hover:bg-slate-800/30 transition-colors cursor-pointer group">
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=4F46E5&color=fff" alt="Admin"
+                        class="w-10 h-10 rounded-xl border border-slate-600 shadow-sm group-hover:border-primary/50 transition-colors">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-white truncate">Admin User</p>
+                        <p class="text-xs text-slate-400 truncate">admin@store.com</p>
+                    </div>
+                </div>
+            </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden relative z-10">
+        <!-- Sticky Header -->
+        <header
+            class="h-20 glass-panel border-b border-slate-800/60 flex items-center justify-between px-6 md:px-10 sticky top-0 z-30">
+            <div class="flex items-center gap-4 w-full max-w-xl">
+                <button class="md:hidden text-slate-400 hover:text-white p-2 rounded-lg bg-slate-800/50">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="relative w-full group">
+                    <i
+                        class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 group-focus-within:text-primaryAccent transition-colors"></i>
+                    <input type="text" id="searchInput" placeholder="Search orders, customers, or transactions..."
+                        class="w-full bg-slate-900/50 border border-slate-700/50 rounded-2xl py-2.5 pl-11 pr-4 text-sm focus:outline-none focus:border-primary/50 focus:bg-slate-900/80 focus:ring-4 focus:ring-primary/10 transition-all text-white placeholder-slate-500">
+                    <!-- Search Shortcut -->
+                    <div
+                        class="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1 font-mono text-[10px] text-slate-500 border border-slate-700 px-2 py-1 rounded bg-slate-800/50">
+                        <span>Ctrl</span><span>K</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 flex-shrink-0">
+                <button
+                    class="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800/80 border border-transparent hover:border-slate-700 transition-all relative">
+                    <i class="fas fa-bell"></i>
+                    <span
+                        class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full animate-pulse border border-dark"></span>
+                </button>
+                <div class="h-8 w-px bg-slate-800 mx-2 hidden sm:block"></div>
+                <button onclick="openNewOrderModal()"
+                    class="hidden sm:flex items-center gap-2 px-4 py-2 bg-primary hover:bg-indigo-500 text-white text-sm font-medium rounded-xl transition-all shadow-lg shadow-primary/25">
+                    <i class="fas fa-plus mr-1"></i> New Order
+                </button>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-8 pb-24 scrollbar-hide">
+
+            <div class="mb-8 flex justify-between items-end">
+                <div>
+                    <h2 class="text-2xl font-bold text-white mb-1">Overview</h2>
+                    <p class="text-sm text-slate-400">Track your store's performance and customer engagement.</p>
+                </div>
+                <!-- Date picker mockup -->
+                <div
+                    class="hidden sm:flex items-center gap-2 bg-slate-800/40 border border-slate-700/50 px-4 py-2 rounded-xl text-sm text-slate-300">
+                    <i class="far fa-calendar-alt text-slate-400"></i>
+                    <span>Last 30 Days</span>
+                    <i class="fas fa-chevron-down text-[10px] ml-2 text-slate-500"></i>
+                </div>
+            </div>
+
+            <!-- Analytics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" id="statsContainer">
+                <!-- Skeletons (Will be replaced by JS) -->
+                <div
+                    class="glass-panel p-6 rounded-2xl border border-slate-800/60 skeleton-card h-32 relative overflow-hidden">
+                    <div class="h-4 bg-slate-700/50 rounded w-1/3 mb-4 backdrop-blur-sm"></div>
+                    <div class="h-8 bg-slate-700/50 rounded w-1/2"></div>
+                </div>
+                <div
+                    class="glass-panel p-6 rounded-2xl border border-slate-800/60 skeleton-card h-32 relative overflow-hidden">
+                    <div class="h-4 bg-slate-700/50 rounded w-1/3 mb-4 backdrop-blur-sm"></div>
+                    <div class="h-8 bg-slate-700/50 rounded w-1/2"></div>
+                </div>
+                <div
+                    class="glass-panel p-6 rounded-2xl border border-slate-800/60 skeleton-card h-32 relative overflow-hidden">
+                    <div class="h-4 bg-slate-700/50 rounded w-1/3 mb-4 backdrop-blur-sm"></div>
+                    <div class="h-8 bg-slate-700/50 rounded w-1/2"></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <!-- Order Tracking -->
+                <div
+                    class="xl:col-span-2 glass-panel rounded-2xl border border-slate-800/60 flex flex-col shadow-2xl shadow-black/20">
+                    <div class="p-6 border-b border-slate-800/60 flex justify-between items-center bg-slate-900/20">
+                        <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                            <i class="fas fa-list-ul text-slate-400 text-sm"></i> Recent Orders
+                        </h3>
+                        <div class="flex gap-2">
+                            <button
+                                class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"><i
+                                    class="fas fa-filter text-sm"></i></button>
+                            <button
+                                class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"><i
+                                    class="fas fa-ellipsis-v text-sm"></i></button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto flex-1 p-0">
+                        <table class="w-full text-left border-collapse min-w-max">
+                            <thead class="bg-slate-900/40">
+                                <tr class="text-slate-400 text-xs uppercase tracking-wider">
+                                    <th class="py-4 px-6 font-medium">Order ID</th>
+                                    <th class="py-4 px-6 font-medium">Customer</th>
+                                    <th class="py-4 px-6 font-medium">Amount</th>
+                                    <th class="py-4 px-6 font-medium">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody" class="text-sm">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination (Mock) -->
+                    <div
+                        class="p-4 border-t border-slate-800/60 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400 bg-slate-900/20 rounded-b-2xl">
+                        <span>Showing <span class="text-white font-medium">1-6</span> of 1,250 orders</span>
+                        <div class="flex gap-1">
+                            <button
+                                class="w-8 h-8 flex items-center justify-center bg-slate-800/50 border border-slate-700 rounded-lg hover:bg-slate-700 hover:text-white transition disabled:opacity-50"><i
+                                    class="fas fa-chevron-left"></i></button>
+                            <button
+                                class="w-8 h-8 flex items-center justify-center bg-primary text-white border border-primary rounded-lg shadow-lg shadow-primary/20">1</button>
+                            <button
+                                class="w-8 h-8 flex items-center justify-center bg-slate-800/50 border border-slate-700 rounded-lg hover:bg-slate-700 hover:text-white transition">2</button>
+                            <button
+                                class="w-8 h-8 flex items-center justify-center bg-slate-800/50 border border-slate-700 rounded-lg hover:bg-slate-700 hover:text-white transition">3</button>
+                            <button
+                                class="w-8 h-8 flex items-center justify-center bg-slate-800/50 border border-slate-700 rounded-lg hover:bg-slate-700 hover:text-white transition"><i
+                                    class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer Management -->
+                <div
+                    class="glass-panel rounded-2xl border border-slate-800/60 flex flex-col h-[600px] shadow-2xl shadow-black/20">
+                    <div class="p-6 border-b border-slate-800/60 flex justify-between items-center bg-slate-900/20">
+                        <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                            <i class="fas fa-crown text-amber-400 text-sm"></i> Top Customers
+                        </h3>
+                        <button onclick="openCustomersModal()" class="text-xs font-medium text-primaryAccent hover:text-primary transition-colors">View All &rarr;</button>
+                    </div>
+                    <div class="p-5 flex-1 overflow-y-auto space-y-4 scrollbar-hide relative" id="customersContainer">
+                        <!-- Populated by JS -->
+                        <!-- Overlay gradient for scroll indication -->
+                        <div
+                            class="sticky bottom-0 left-0 w-full h-12 bg-gradient-to-t from-[#0d121e] to-transparent pointer-events-none rounded-b-xl z-10">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- New Order Modal -->
+    <div id="newOrderModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-panel border border-slate-700/50 rounded-2xl p-6 w-full max-w-md shadow-2xl transform scale-95 transition-transform duration-300">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-xl font-bold text-white tracking-tight">Create New Order</h3>
+                <button onclick="closeNewOrderModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="newOrderForm" onsubmit="handleNewOrderSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Customer Name</label>
+                    <input type="text" id="no-name" required class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-4 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition border-slate-700 focus:border-indigo-500" placeholder="Jane Doe">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Order Amount ($)</label>
+                    <input type="number" id="no-amount" step="0.01" required class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-4 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition border-slate-700 focus:border-indigo-500" placeholder="99.99">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Initial Status</label>
+                    <select id="no-status" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-4 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition appearance-none relative">
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-indigo-600 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-primary/20 mt-4">
+                    Save to Database & Create
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- All Customers Directory Modal -->
+    <div id="customersModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-panel border border-slate-700/50 rounded-3xl p-6 w-full max-w-5xl shadow-2xl transform scale-95 transition-transform duration-300 h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center mb-6 shrink-0 border-b border-slate-800/60 pb-4">
+                <div>
+                    <h3 class="text-2xl font-bold text-white tracking-tight">Full Customer Directory</h3>
+                    <p class="text-slate-400 text-sm mt-1" id="customersCounterMsg">Loading master directory...</p>
+                </div>
+                <button onclick="closeCustomersModal()" class="w-10 h-10 flex items-center justify-center text-slate-400 bg-slate-800/50 hover:bg-slate-700 hover:text-white rounded-xl transition-all"><i class="fas fa-times text-lg"></i></button>
+            </div>
+            <div class="overflow-y-auto pr-3 pb-6 flex-1 scrollbar-hide grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 content-start" id="allCustomersGrid">
+               <!-- Auto populated via JS from arrays -->
+            </div>
+        </div>
+    </div>
+
+    <!-- WooCommerce API Integrations Modal -->
+    <div id="apiModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-panel border border-slate-700/50 rounded-3xl p-8 w-full max-w-lg shadow-2xl transform scale-95 transition-transform duration-300">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-white tracking-tight flex items-center gap-2"><i class="fab fa-wordpress text-blue-400"></i> WooCommerce REST API</h3>
+                    <p class="text-slate-400 text-sm mt-1">Connect your standalone app to a live store.</p>
+                </div>
+                <button onclick="closeApiModal()" class="w-8 h-8 flex items-center justify-center text-slate-400 bg-slate-800/50 hover:bg-slate-700 hover:text-white rounded-lg transition-all"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <form id="apiForm" onsubmit="saveApiConfig(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Store URL</label>
+                    <input type="url" id="api-url" required class="w-full bg-slate-900 border border-slate-700 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition font-mono text-sm shadow-inner" placeholder="https://yourstore.com">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Consumer Key (CK)</label>
+                    <input type="text" id="api-ck" required class="w-full bg-slate-900 border border-slate-700 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition font-mono text-sm shadow-inner" placeholder="ck_0000000000000000000000000000">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Consumer Secret (CS)</label>
+                    <input type="password" id="api-cs" required class="w-full bg-slate-900 border border-slate-700 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition font-mono text-sm shadow-inner" placeholder="cs_0000000000000000000000000000">
+                </div>
+                <div class="bg-blue-900/20 border border-blue-800/30 rounded-xl p-3 mt-4 text-xs text-blue-200">
+                    <i class="fas fa-info-circle text-blue-400 mr-1"></i> Ensure your WooCommerce store allows CORS (Cross-Origin Resource Sharing) for client-side API requests.
+                </div>
+                <button type="submit" id="api-submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-blue-500/20 mt-6 flex justify-center items-center gap-2">
+                    <i class="fas fa-plug"></i> Connect & Fetch Live Data
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Profile & Logout Modal -->
+    <div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-panel border border-slate-700/50 rounded-3xl p-8 w-full max-w-sm shadow-2xl transform scale-95 transition-transform duration-300 text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-indigo-500/20 to-purple-500/20"></div>
+            <button onclick="closeProfileModal()" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-slate-400 bg-slate-800/80 hover:bg-slate-700 hover:text-white rounded-lg transition-all z-10"><i class="fas fa-times"></i></button>
+            
+            <div class="mb-4 relative inline-block mt-4 z-10">
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=4F46E5&color=fff" id="pm-avatar" class="w-24 h-24 rounded-2xl mx-auto border-4 border-[#0f172a] shadow-2xl mb-2">
+                <div class="absolute -bottom-1 -right-1 bg-emerald-500 w-6 h-6 rounded-full border-4 border-[#0f172a] shadow-lg"></div>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-white tracking-tight mb-1" id="pm-name">Admin User</h3>
+            <p class="text-slate-400 text-sm mb-8" id="pm-email">admin@store.com</p>
+            
+            <div class="space-y-3">
+                <button onclick="logoutUser()" class="w-full bg-red-500/10 hover:bg-red-500 hover:text-white text-red-500 border border-red-500/20 font-bold py-3.5 rounded-xl transition-all shadow-[0_0_15px_rgba(239,68,68,0.1)] hover:shadow-[0_0_20px_rgba(239,68,68,0.4)] flex justify-center items-center gap-2 group">
+                    <i class="fas fa-sign-out-alt group-hover:-translate-x-1 transition-transform"></i> Secure Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Summary Modal -->
+    <div id="analyticsModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-panel border border-slate-700/50 rounded-3xl p-8 w-full max-w-4xl shadow-2xl transform scale-95 transition-transform duration-300 relative overflow-hidden h-[85vh] flex flex-col">
+            <button onclick="closeAnalyticsModal()" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-slate-400 bg-slate-800/80 hover:bg-slate-700 hover:text-white rounded-xl transition-all z-10"><i class="fas fa-times text-lg"></i></button>
+            
+            <div class="mb-6 border-b border-slate-800 pb-4 shrink-0">
+                <h3 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3"><i class="fas fa-chart-line text-primary"></i> Deep Analytics & Summaries</h3>
+                <p class="text-slate-400 text-sm mt-1">Real-time performance distribution across all registered WooCommerce orders.</p>
+            </div>
+            
+            <div class="overflow-y-auto pr-3 pb-6 flex-1 scrollbar-hide space-y-6">
+                <!-- Top Averages -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="p-6 bg-slate-900/40 border border-slate-800/60 rounded-2xl relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 bg-emerald-500/10 w-24 h-24 rounded-full blur-xl pointer-events-none"></div>
+                        <p class="text-xs text-slate-500 uppercase tracking-widest font-bold mb-2">Average Order Value (AOV)</p>
+                        <h4 class="text-4xl font-bold text-emerald-400" id="am-aov">$0.00</h4>
+                        <p class="text-[10px] text-slate-500 mt-2">Aggregated across all verified orders in the database.</p>
+                    </div>
+                    <div class="p-6 bg-slate-900/40 border border-slate-800/60 rounded-2xl relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 bg-amber-500/10 w-24 h-24 rounded-full blur-xl pointer-events-none"></div>
+                        <p class="text-xs text-slate-500 uppercase tracking-widest font-bold mb-2">Highest Single Order</p>
+                        <h4 class="text-4xl font-bold text-amber-400" id="am-highest">$0.00</h4>
+                        <p class="text-[10px] text-slate-400 mt-2 font-medium" id="am-highest-user">N/A</p>
+                    </div>
+                </div>
+
+                <!-- Status Distribution -->
+                <div class="p-6 bg-slate-900/40 border border-slate-800/60 rounded-2xl">
+                    <h4 class="text-white font-bold mb-5 flex items-center gap-2"><i class="fas fa-layer-group text-slate-400"></i> Lifetime Order Status Distribution</h4>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-300 mb-1.5"><span class="text-emerald-400">Completed Orders</span> <span id="am-count-completed">0</span></div>
+                            <div class="h-3 w-full bg-slate-800 rounded-full overflow-hidden shadow-inner">
+                                <div id="am-bar-completed" class="h-full bg-emerald-500 rounded-full transition-all duration-1000 w-0"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-300 mb-1.5"><span class="text-blue-400">Processing Orders</span> <span id="am-count-processing">0</span></div>
+                            <div class="h-3 w-full bg-slate-800 rounded-full overflow-hidden shadow-inner">
+                                <div id="am-bar-processing" class="h-full bg-blue-500 rounded-full transition-all duration-1000 w-0"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-300 mb-1.5"><span class="text-amber-400">Pending Orders</span> <span id="am-count-pending">0</span></div>
+                            <div class="h-3 w-full bg-slate-800 rounded-full overflow-hidden shadow-inner">
+                                <div id="am-bar-pending" class="h-full bg-amber-500 rounded-full transition-all duration-1000 w-0"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-300 mb-1.5"><span class="text-red-400">Cancelled / Failed</span> <span id="am-count-cancelled">0</span></div>
+                            <div class="h-3 w-full bg-slate-800 rounded-full overflow-hidden shadow-inner">
+                                <div id="am-bar-cancelled" class="h-full bg-red-500 rounded-full transition-all duration-1000 w-0"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
